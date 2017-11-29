@@ -1,0 +1,137 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" [formGroup]="addAssignment" (ngSubmit)="onSubmit()" #assignMent="ngForm" novalidate>
+    <div class="block" style="max-height:400px;overflow:auto">
+        <div class="form-group col-sm-6" [ngClass]="{'has-error':formErrors.function_group && assignMent.submitted}">
+          <!-- <span>{{addAssignment.controls.function_group.value }}</span> -->
+            <label for="function_group" class="col-sm-6 control-label">Function Group:</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="function_group" formControlName="function_group">
+                <option *ngFor="let func of functionGroups" [value]="func.function_grp_id">{{func.function_grp_name}}</option>
+              </select>
+              <span class="help-block" *ngIf="formErrors.function_group && assignMent.submitted">
+                {{ formErrors.function_group }}
+              </span>
+            </div>
+          </div>
+          <div class="form-group col-sm-6" *ngIf="addAssignment.controls.function_group.value == 1"  [ngClass]="{'has-error':formErrors.business_unit && assignMent.submitted}">
+            <label for="business_unit" class="col-sm-6 control-label">Business Unit :</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="business_unit" formControlName="business_unit">
+                <option *ngFor="let bu of businessUnitData" [value]="bu.bu_id" >{{bu.bu_name}}</option>
+              </select>
+              <span class="help-block" *ngIf="formErrors.business_unit && assignMent.submitted">
+                {{ formErrors.business_unit }}
+              </span>
+            </div>
+          </div>
+          <div class="form-group col-sm-6"  *ngIf="addAssignment.controls.function_group.value == 1" [ngClass]="{'has-error':formErrors.delivery_unit && assignMent.submitted}">
+            <label for="delivery_unit" class="col-sm-6 control-label">Delivery Unit:</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="delivery_unit" formControlName="delivery_unit">
+                  <option *ngFor="let du of deliveryUnitData" [value]="du.du_id">{{du.du_name}}</option>
+              </select>
+              <span class="help-block" *ngIf="formErrors.delivery_unit && assignMent.submitted">
+                {{ formErrors.delivery_unit }}
+              </span>
+            </div>
+          </div>
+          <div class="form-group col-sm-6"  *ngIf="addAssignment.controls.function_group.value == 1" [ngClass]="{'has-error':formErrors.account_id && assignMent.submitted}">
+            <label for="account_id" class="col-sm-6 control-label">Account Id:</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="account_id" formControlName="account_id">
+                <option *ngFor="let acId of accountIdData" [value]="acId">{{acId ? acId: 'Select Account Id'}}</option>
+              </select>
+              <span class="help-block" *ngIf="formErrors.account_id && assignMent.submitted">
+                {{ formErrors.account_id }}
+              </span>
+            </div>
+          </div>
+        <div class="form-group col-sm-6"  *ngIf="addAssignment.controls.function_group.value == 1" [ngClass]="{'has-error':formErrors.charge_code_type && assignMent.submitted}">
+          <label for="chargecode" class="col-sm-6 control-label">Charge Code Type:</label>
+          <div class="col-sm-6">
+            <select class="form-control" id="chargecode" formControlName="charge_code_type">
+              <option *ngFor="let chargeCt of chargeCodeTypeData" [value]="chargeCt">{{chargeCt ? chargeCt : 'Select Charge Code Type'}}</option>
+            </select>
+            <span class="help-block" *ngIf="formErrors.charge_code_type && assignMent.submitted">
+              {{ formErrors.charge_code_type }}
+            </span>
+          </div>
+        </div>
+       <div class="form-group col-sm-6"  *ngIf="addAssignment.controls.function_group.value == 1" [ngClass]="{'has-error':formErrors.charge_code_subtype && assignMent.submitted}">
+          <label for="subchargecode" class="col-sm-6 control-label">Sub Charge Code Type: </label>
+          <div class="col-sm-6">
+            <select class="form-control" id="subchargecode" formControlName="charge_code_subtype">
+              <option *ngFor="let chargeCts of subChargeCodeTypeData" [value]="chargeCts">{{chargeCts ? chargeCts : 'Select Sub Charge Code Type'}}</option>
+            </select>
+            <span class="help-block" *ngIf="formErrors.charge_code_subtype && assignMent.submitted">
+              {{ formErrors.charge_code_subtype }}
+            </span>
+          </div>
+        </div>
+        <div class="form-group col-sm-6"  *ngIf="addAssignment.controls.function_group.value == 1" [ngClass]="{'has-error':formErrors.client && assignMent.submitted}">
+          <label for="client" class="col-sm-6 control-label">Client:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="client" formControlName="client">
+            <span class="help-block" *ngIf="formErrors.client && assignMent.submitted">
+              {{ formErrors.client }}
+            </span>
+          </div>
+        </div>
+        <div class="form-group col-sm-6" [ngClass]="{'has-error':formErrors.country && assignMent.submitted}">
+          <label for="country" class="col-sm-6 control-label">Country:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="country" formControlName="country">
+            <span class="help-block" *ngIf="formErrors.country && assignMent.submitted">
+              {{ formErrors.country }}
+            </span>
+          </div>
+        </div>
+        <div class="form-group col-sm-6" [ngClass]="{'has-error':formErrors.charge_code && assignMent.submitted}">
+          <label for="chargecodes" class="col-sm-6 control-label">Charge Code:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="chargecodes" formControlName="charge_code">
+            <span class="help-block" *ngIf="formErrors.charge_code && assignMent.submitted">
+              {{ formErrors.charge_code }}
+            </span>
+          </div>
+        </div>
+        <div class="form-group col-sm-6" [ngClass]="{'has-error':formErrors.charge_code_owner && assignMent.submitted}">
+          <label for="owner" class="col-sm-6 control-label">Owner:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="owner" formControlName="charge_code_owner">
+            <span class="help-block" *ngIf="formErrors.charge_code_owner && assignMent.submitted">
+              {{ formErrors.charge_code_owner }}
+            </span>
+          </div>
+        </div>
+        
+        <div class="form-group col-sm-6" [ngClass]="{'has-error':formErrors.charge_code_description && assignMent.submitted}">
+          <label for="charge_code_description" class="col-sm-6 control-label">Charge Code Description:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="charge_code_description" formControlName="charge_code_description">
+            <span class="help-block" *ngIf="formErrors.charge_code_description && assignMent.submitted">
+              {{ formErrors.charge_code_description }}
+            </span>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <div class="col-sm-offset-5 col-sm-7">
+          <span class="pull-left" style="margin-left:-10px">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+          </span>
+        </div>
+      </div>
+  </form>
+  
+</div>
+
+<div [ngBusy]="busy"></div>

@@ -1,0 +1,134 @@
+<div #gridParent class="col-xs-12">
+    <div class="action-block pull-right" style="margin-bottom: -34px; position: relative; z-index: 3;">
+        <div class="">
+          <button type="button" class="btn btn-default btn-padd" (click)="assignmentSetting()"> Assign</button>
+          <button type="button" class="btn btn-primary btn-padd" (click)="addAssignment()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+        </div>
+      </div>
+  <!-- <div class="row padding-tb-10">
+    <div class="col-md-12">
+      <div class="action-block">
+        <div class="pull-right">
+          <button type="button" class="btn btn-default btn-padd" (click)="assignmentSetting()"> Assign</button>
+          <button type="button" class="btn btn-primary btn-padd" (click)="addAssignment()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+<table class="table table-bordered table-inverse table-time" style="margin:0" id="tableGrid">
+    <thead>
+         <tr style="color:white; background: #005c97;">
+            <th width="30" height="{{headerRowHeight}}"></th>
+            <th width="{{header.width}}" height="{{headerRowHeight}}" *ngFor="let header of gridHeaders">{{header.name}}
+            </th>
+            <th width="60" height="{{headerRowHeight}}">Action</th>
+          </tr>
+      </thead>
+  <tbody>
+    <tr *ngFor="let charge of assignmentData?.details">
+        <td  width="30" height="{{bodyRowHeight}}">
+            <div class="checkbox checkbox-primary" style="margin:0px; width:20px">
+              <input type="checkbox" (change)="populateAssignieesData(charge,$event.target.checked)">
+              <label></label>
+            </div>
+          </td>
+      <td *ngFor="let h of gridHeaders" width="{{h.width}}" height="{{bodyRowHeight}}">{{charge[h.field]}}</td>
+      <td width="60" height="{{bodyRowHeight}}">
+        <button type="button" class="btn btn-default btn-padd" (click)="editChargeCode(charge)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+      
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<!-- 
+<div class="col-xs-12">
+  <div class="row padding-tb-10">
+    <div class="col-md-12">
+      <div class="action-block">
+        <div class="pull-right">
+          <button type="button" class="btn btn-default btn-padd" (click)="assignmentSetting()"> Assign</button>
+          <button type="button" class="btn btn-primary btn-padd" (click)="addAssignment()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div #gridParent>
+    <div class="assignmentDataContainer">
+      <div *ngIf="assignmentData" class="table-grid-block table-grid-block-2">
+        <div class="assignmentDataHeader table-grid-block-header">
+          <div class="table-grid-block-header-left">
+            <table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+              <thead>
+                <tr style="color:white; background: #005c97;">
+                    <th width="30" height="{{headerRowHeight}}"></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="table-grid-block-header-center">
+              <div class="table-grid-block-header-innerright"  [ngClass]="{'scrollings':overFlowClass}" [style.left]="gridHeaderLeft+'px'">
+                  <table class="table table-bordered table-inverse table-time" style="margin:0">
+                      <thead>
+                        <tr style="color:white; background: #005c97;">
+                          <th width="{{header.width}}" height="{{headerRowHeight}}" (click)="sort(header.field)" *ngFor="let header of gridHeaders">{{header.name}}
+                            <i class="fa" [ngClass]="{'fa-sort': column != header.field, 'fa-sort-asc': (column == header.field && isDesc), 'fa-sort-desc': (column == header.field && !isDesc) }"
+                              aria-hidden="true"> </i> 
+                          </th>
+                          <th width="60" height="{{headerRowHeight}}">Action</th>
+                        </tr>
+                      </thead>
+                    </table>
+              </div>
+          </div>
+        </div>
+        <div class="assignmentDataBody table-grid-block-body" [style.height]="leftTableRowCount+'px'">
+          <div class="table-grid-block-body-left"  [style.height]="gridBodyHeight+'px'">
+              <div class="table-grid-block-body-innerleft" [style.top]="gridBodyTop+'px'">
+                <table class="table table-bordered table-inverse table-time" style="margin:0">
+                  <tbody>
+                    <tr *ngFor="let charge of assignmentData.details | paginate: { itemsPerPage: 10, currentPage: p } | orderBy: {property: column, direction: direction}">
+                      <td  width="30" height="{{bodyRowHeight}}">
+                        <div class="checkbox checkbox-primary" style="margin:0px; width:20px">
+                          <input type="checkbox" (change)="populateAssignieesData(charge,$event.target.checked)">
+                          <label></label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+          <div class="table-grid-block-body-center" [style.height]="gridBodyHeight+'px'" (scroll)="moveGridHeader($event);">
+            <div class="table-grid-block-body-innerright">
+              <table class="table table-bordered table-inverse table-time" style="margin:0">
+                <tbody>
+                  <tr *ngFor="let charge of assignmentData.details | paginate: { itemsPerPage: 10, currentPage: p } | orderBy: {property: column, direction: direction}">
+                    <td *ngFor="let h of gridHeaders" width="{{h.width}}" height="{{bodyRowHeight}}">{{charge[h.field]}}</td>
+                    <td width="60" height="{{bodyRowHeight}}">
+                      <button type="button" class="btn btn-default btn-padd" (click)="editChargeCode(charge)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div> -->
+<div [ngBusy]="busy"></div>
+
+
+<confirm
+  title="{{confirmPopupData.title}}" 
+  message="{{confirmPopupData.message}}" 
+  confirmText="{{confirmPopupData.confirmText}}" 
+  cancelText="{{confirmPopupData.cancelText}}"
+  type="{{confirmPopupData.type}}"
+  isCheckBox="{{confirmPopupData.isCheckBox}}"
+  disclaimerText="{{confirmPopupData.disclaimerText}}">
+</confirm>

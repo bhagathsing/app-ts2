@@ -1,0 +1,76 @@
+<div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
+  <div class="modal-dialog sta-confirm-dialog" [ngClass]="{ 'modal-sm': (size === 'small') }" >
+    <div class="modal-content">
+      <div class="modal-header" style="background:none !important">
+        <button *ngIf="cancelText" type="button" class="close" (click)="onCancelClick($event)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{ title}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="modal-message">
+            <span class="icon" [ngClass]="type" *ngIf="!disclaimerText">
+                <i class="fa fa-exclamation-circle" *ngIf="type==='danger'" aria-hidden="true"></i>
+                <i class="fa fa-check" *ngIf="type==='success'" aria-hidden="true"></i>
+                <i class="fa fa fa-info" *ngIf="type==='warning'" aria-hidden="true"></i>
+            </span>
+          <span class="text" *ngIf="!disclaimerText">{{ message }}</span>
+          <div class="block confirm-blocks" *ngIf="disclaimerText">
+            <div class="row" *ngIf="dataObj" >
+            <div class="col-xs-12"><strong>Time report will be submitted to:</strong></div>
+              <div class="col-xs-4">
+                
+                <h5><strong>Approvers</strong></h5>
+                <div class="box-block">
+                  <ul class="list-block">
+                    <li *ngFor="let obj of dataObj.approverIds">
+                      <span>{{obj.split('-')[1]}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                  <h5><strong>Time report reviewer</strong></h5>
+                  <div class="box-block">
+                    <ul class="list-block">
+                      <li *ngFor="let obj of dataObj.superiorId">
+                        <span>{{obj.split('-')[1]}}</span>
+                      </li>
+                    </ul>
+                </div>
+                </div>
+                <div class="col-xs-4">
+                <h5><strong>Notify submission to</strong></h5>
+                <div class="box-block">
+                  <ul class="list-block">
+                    <li *ngFor="let obj of dataObj.copytoId">
+                      <span>{{obj.split('-')[1]}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="isCheckBox == 'Yes'">
+              <div class="checkbox checkbox-primary">
+                <input id="checkbox2" type="checkbox" [(ngModel)]="isChecked">
+                <label for="checkbox2"> 
+                  {{disclaimerText}}
+                </label>
+            </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-btn">
+          <button *ngIf="cancelText && cancelText !='--' " type="button" class="btn btn-default btn-cancel" (click)="onCancelClick($event)">{{ cancelText }}</button>
+          <span *ngIf="!disclaimerText"><button type="button" class="btn btn-primary btn-confirm" (click)="onConfirmClick($event)" [ngClass]="type">{{ confirmText}}</button>
+          </span>
+          <span *ngIf="disclaimerText">
+            <button type="button" [disabled]="!isChecked" class="btn btn-primary btn-confirm" (click)="onConfirmClick($event)" [ngClass]="type">{{ confirmText}}</button>
+          </span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!-- Header start-->
+<myte-header #headerNav></myte-header>
+<!-- Header end-->
+<div class="content-wrapper">
+    <!-- <div class="col-xs-12">asg</div> -->
+    <div class="container-fluid">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="clear-block"></div>
+</div>
+<!-- Footer start-->
+<footer class="myte-footer footer"></footer>
+<!-- Footer end-->
+
+
+<confirm 
+    title="{{confirmPopupData.title}}" 
+    message="{{confirmPopupData.message}}" 
+    confirmText="{{confirmPopupData.confirmText}}" 
+    cancelText="{{confirmPopupData.cancelText}}"
+    type="{{confirmPopupData.type}}">
+</confirm>
+

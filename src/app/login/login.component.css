@@ -1,0 +1,8 @@
+.login-title{
+    font-size: 28px;
+    font-weight: normal;
+    margin-bottom: 25px;
+}
+.has-error .alert{
+    padding:4px;
+}

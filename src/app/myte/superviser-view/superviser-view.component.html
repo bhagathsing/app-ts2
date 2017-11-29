@@ -1,0 +1,28 @@
+<div>
+	<div class="col-sm-12 section-block">
+		
+		<div class="row m-t-15">
+			<div class="col-md-12">
+				<ul class="nav nav-tabs">
+					<li class="nav-item" *ngFor="let tabMenu of tabMenu" routerLinkActive="active">
+						<a class="nav-link" [routerLink]="tabMenu.url">{{tabMenu.menuName}}</a>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+		<div class="row" style="margin-top:10px;position:relative">
+			<div class="tab-content">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <confirm 
+	title="Alert Popup" 
+	message="Hi Alert" 
+	confirmText="Confirm" 
+	cancelText="No" 
+	type="warning">
+</confirm> -->

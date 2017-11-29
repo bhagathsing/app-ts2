@@ -1,0 +1,111 @@
+<div class="block padding-tb-10">
+		<div class="col-md-7">
+			<span class="userTimereport"><strong>Time Report</strong> {{userData?.userName}}</span>
+			<span class="pull-right">
+				<button class="btn btn-default btn-none" (click)="prevDate()"><i class="fa fa-chevron-left"></i></button>
+				<span class="time-period-block" bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" (bsValueChange)="onDateSelect($event)" [minDate]="minDate" [maxDate]="maxDate">{{dateRange}}</span>
+				<button class="btn btn-default" (click)="dp.toggle()"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+				<button class="btn btn-default btn-none" (click)="nextDate()"><i class="fa fa-chevron-right"></i></button>
+			</span>
+		</div>
+		<div class="col-md-5">
+			<div class="action-block">
+				<div class="pull-left status">
+				<div class="status-message"><span class="status-lable">Status: </span> <strong class="status-s">{{statusText}}</strong></div>
+				</div>
+				<div class="forReview pull-right" *ngIf="isApprover">
+					<button type="button" class="btn btn-success btn-padd" [disabled]="statusText==='Approved'||statusText==='Rejected' || statusText==='Not Submitted'" (click)="saveTimesheet(resourceListForm,'Approved','')">Approve</button>
+					<button type="button" class="btn btn-danger btn-padd" [disabled]="statusText==='Approved'||statusText==='Rejected' || statusText==='Not Submitted'" (click)="openModal(template)">Reject</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="col-sm-3">
+			<form [formGroup]="resourceListForm" novalidate>
+				<table class="table table-bordered table-inverse table-time myte-table myte-table-left">
+					<thead>
+						<tr>
+							<th colspan="3" height="58" style="color: white;background: #005c97;text-align:center;">Resource List</th>
+						</tr>
+					</thead>
+					<tbody style="background:white;">
+						<tr *ngFor="let resourse of resourceData?.details; let idx = index">
+							<td width="250" height="39">
+								<div class="radio radio-primary">
+									<input type="radio" name="employeeId" id="radio{{idx}}" (change)="changeUser(resourceListForm, resourse)" value="{{resourse.employeeId}}" formControlName="employeeId">
+									<label for="radio{{idx}}">{{resourse.userName}}</label>
+								</div>
+	
+							</td>
+							<td>
+								{{resourse.status == 'New' ? 'Not Submitted' : resourse.status}}
+							</td>
+						</tr>
+						<tr style="padding:0px;" *ngFor="let rows of leftTableRowCount" class="empty-col">
+							<td height="39"></td>
+							<td height="39"></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td style="vertical-align: middle; text-align: center" height="39"></td>
+							<td></td>
+						</tr>
+					</tfoot>
+				</table>
+			</form>
+		</div>
+		<div class="col-sm-9">
+			<div #gridParent>
+				<div *ngIf="timeSheetData && chargeCode">
+					<app-table 
+						[tabValue]="timeSheetData" 
+						[chargeCode]="chargeCode" 
+						[parentElent]="gridParent" 
+						[locations]="locations"
+						[tabName]="'review'"></app-table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<template #template>
+		<div class="modal-header">
+		<h4 class="modal-title pull-left">Rejection reason</h4>
+		<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+		<div class="panel-body" id="report_id">
+
+			<div class="row m-t-10">
+			<div class="textarea-btn-holder form-group form-group-replace">
+				<textarea class="form-control text-comment" [ngClass]="{'commentError':commentError}" placeholder="Description" name="description" [(ngModel)]="taskDescription"></textarea>
+			</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+			<button type="submit" class="btn btn-labeled btn-success"
+			(click)="saveTimesheet(resourceListForm,'Rejected',taskDescription)">
+					<span class="btn-label">
+						<i class="fa fa-check"></i>
+					</span>Submit
+				</button>
+		</div>
+		</div>
+	</template>
+	<div [ngBusy]="busy"></div>
+
+	<confirm 
+		title="{{confirmPopupData.title}}" 
+		message="{{confirmPopupData.message}}" 
+		confirmText="{{confirmPopupData.confirmText}}" 
+		cancelText="{{confirmPopupData.cancelText}}"
+		type="{{confirmPopupData.type}}"
+		isCheckBox="{{confirmPopupData.isCheckBox}}"
+		disclaimerText="{{confirmPopupData.disclaimerText}}">
+	</confirm>

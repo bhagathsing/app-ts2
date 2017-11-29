@@ -1,0 +1,62 @@
+<div class="col-sm-12">
+    <div class="row padding-tb-10">
+        <div class="col-sm-12 col-md-7">
+            <span class="userTimereport"><strong>Time Report</strong></span>
+            <span class="pull-right">
+                    <button class="btn btn-default" (click)="prevDate()"><i class="fa fa-chevron-left"></i></button>
+                    <span class="time-period-block" bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" (bsValueChange)="onDateSelect($event)" [minDate]="minDate" [maxDate]="maxDate">{{dateRange}}</span>
+            <button class="btn btn-default" (click)="dp.toggle()"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+            <button class="btn btn-default" (click)="nextDate()"><i class="fa fa-chevron-right"></i></button>
+            </span>
+        </div>
+        <div class="col-sm-12 col-md-5">
+            <div class="action-block">
+                <div class="pull-left status">
+                    <div class="status-message"><span class="status-lable">Submission Status: </span> <strong class="status-s">{{statusTxt}} 
+                    </strong> 
+                    <button type="button" class="btn btn-default btn-none-2" 
+                        popover="{{commentTxt}}" *ngIf="statusTxt === 'Rejected'"
+                        [outsideClick]="true"  
+                        popoverTitle="Reason" placement="left"  container="body">
+                        <i class="fa fa-comment" aria-hidden="true"></i>
+                    </button>
+                </div>
+                </div>
+                <div class="forRecord pull-right">
+                    <button type="button" class="btn btn-default btn-padd" (click)="clearAllFormData()" [disabled]="isSave || statusTxt==='Submitted' || statusTxt =='Approved'">Reset</button>
+                    <button type="button" class="btn btn-primary btn-padd" (click)="getHistory()">History</button>
+                    <button type="button" class="btn btn-primary btn-padd" (click)="saveTimesheet('Draft')" [disabled]="isSave  || statusTxt =='Approved' || statusTxt==='Submitted' || statusTxt =='Rejected'">Save</button>
+                    <button type="button" class="btn btn-success btn-padd" (click)="saveTimesheet('Submitted')" [disabled]="isSave || statusTxt =='Approved'">Submit</button>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="pull-left commentStatus">
+            <div class="status-message">
+                <span class="status-s">{{commentTxt}}</span>
+            </div>
+        </div> -->
+    </div>
+    <!-- <div [innerHTML]="sampleHtml"></div> -->
+    <div #gridParent class="block">
+        <div *ngIf="timeSheetData && chargeCode && locations">
+            <app-table 
+                [tabValue]="timeSheetData" 
+                [chargeCode]="chargeCode" 
+                [parentElent]="gridParent"
+                [locations]="locations" 
+                [tabName]="'record'"></app-table>
+        </div>
+    </div>
+</div>
+
+<div [ngBusy]="busy"></div>
+
+<confirm
+    title="{{confirmPopupData.title}}" 
+    message="{{confirmPopupData.message}}" 
+    confirmText="{{confirmPopupData.confirmText}}" 
+    cancelText="{{confirmPopupData.cancelText}}"
+    type="{{confirmPopupData.type}}"
+    isCheckBox="{{confirmPopupData.isCheckBox}}"
+    disclaimerText="{{confirmPopupData.disclaimerText}}">
+</confirm>

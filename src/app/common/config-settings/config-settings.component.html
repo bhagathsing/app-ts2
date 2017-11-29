@@ -1,0 +1,90 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Configuration</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="panel-body" id="report_id">
+        <div class="row m-t-10">
+            <h5 class="col-xs-12 ">Time report reviewer</h5>
+            <div class="col-md-5 col-xs-12 ">
+                <ss-multiselect-dropdown (onLazyLoad)="onSearch($event, 'timereportReviewNames')" [settings]="mySettings" [name]="'userName'" [masterData]="configEmpData?.details" [options]="trReviwersList" [texts]="myTexts" [(ngModel)]="trReviwersListModel"
+                    (ngModelChange)="getTimeReport($event)"></ss-multiselect-dropdown>
+            </div>
+            <div class="col-md-7 col-xs-12">
+                <!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 " align="right" style="padding-right: 0px;">
+                    <button class="paginate_button btn btn-default" id="right_dash" type="button" (click)="getTimeReport('timereportReviewNames')"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                </div>-->
+                <div class=" zeropad">
+                    <div class="div_names">
+                        <div *ngFor="let reviwer of trReviwersListModel; let i = index;">
+                            <a (click)="removeSlUsers(i,trReviwersListModel)"><i class="fa fa-close" aria-hidden="true"></i></a>
+                            {{ reviwer.userName }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="row m-t-10">
+            <h5 class="col-xs-12 ">Notify submission to</h5>
+            <div class="col-md-5 col-xs-12 ">
+                <ss-multiselect-dropdown (onLazyLoad)="onSearch($event, 'notifyReviewNames')" [settings]="mySettings" [name]="'userName'" [masterData]="configAllEmpData?.details" [options]="trSubmitToList" [texts]="myTexts" [(ngModel)]="trSubmitToListModel" (ngModelChange)="getTimeReport2($event)"></ss-multiselect-dropdown>
+
+
+            </div>
+            <div class="col-md-7 col-xs-12">
+                <div class=" zeropad">
+                    <div class="div_names">
+                        
+                        <div *ngFor="let reviwer of trSubmitToListModel; let i = index;">
+                            <a (click)="removeSlUsers(i,trSubmitToListModel)"><i class="fa fa-close" aria-hidden="true"></i></a>
+                            {{ reviwer.userName }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="row m-t-10">
+            <h5 class="col-xs-12 ">Approvers</h5>
+            <div class="col-md-5 col-xs-12 " [ngClass]="{'has-error':emptyApprover}">
+                <!--<ss-multiselect-dropdown (onLazyLoad)="onSearch($event, 'approvalReviewNames')" [settings]="mySettings" [name]="'userName'" [masterData]="configEmpData?.details" [options]="trApproversList" [texts]="myTexts" [(ngModel)]="trApproversListModel" (ngModelChange)="getTimeReport('approvalReviewNames')"></ss-multiselect-dropdown>-->
+
+                 <ng-select [allowClear]="true"
+                    [active]="trApproversListModel"
+                    [items]="configEmpData?.details"
+                    [disabled]="disabled"
+                    (selected)="selected($event);emptyApprover=false"
+                    (removed)="removed($event)"
+                    [textField]="'userName'"
+                    [idField]="'userId'"
+                    placeholder="Select">
+                </ng-select> 
+
+
+            </div>
+            <div class="col-md-7 col-xs-12">
+                <!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 " align="right" style="padding-right: 0px;">
+                    <button class="paginate_button btn btn-default" id="right_dash" style="" type="button" (click)="getTimeReport('approvalReviewNames')"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                </div>-->
+                <div class=" zeropad">
+                    <div class="div_names">
+                        <div *ngFor="let reviwer of approvedReviewers; let i = index;">
+                              <a (click)="removeSlUsers(i,'approvalReviewNames')"><i class="fa fa-close" aria-hidden="true"></i></a>
+                            {{ reviwer.userName }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+        <button type="submit" class="btn btn-labeled btn-success" [disabled]="approvedReviewers?.length==0 && notifiedReviewers?.length==0 && trReviewers?.length ==0" (click)="saveConfigDetails()">
+            <span class="btn-label">
+                <i class="fa fa-check"></i>
+            </span>Submit
+        </button>
+    </div>
+</div>
+<div [ngBusy]="busy"></div>

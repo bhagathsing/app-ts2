@@ -1,0 +1,15 @@
+a {
+  outline: none !important;
+}
+
+.dropdown-inline {
+  display: inline-block;
+  width: 100%;
+  text-align: left
+}
+
+.dropdown-toggle .caret {
+  margin-left: 4px;
+  white-space: nowrap;
+  display: inline-block;
+}

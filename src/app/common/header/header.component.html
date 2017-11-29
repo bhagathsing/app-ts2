@@ -1,0 +1,51 @@
+<header class="header">
+    <div class="container-fluid">
+        <div class="block">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="page-scroll nav-logo">
+                        <a class="navbar-brand page-scroll logo-1 pull-left"
+                        target="_blank"
+                       style="float: right;"> <img src="./assets/images/logo1.jpg" width="176px"
+                       class="img-responsive img-centered" alt="BlueSwan"></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    &nbsp;
+                    <!-- <a class="navbar-brand page-scroll"
+                        href="http://www.cigniti.com/blueswan/" target="_blank"
+                        style="float: right;"> <img src="/assets/images/blueswan.png"
+                        class="img-responsive img-centered" alt="BlueSwan"></a> -->
+                </div>
+                <div class="col-md-5">
+                    <div class="pull-right">
+                        <div class="dd-menu-block" dropdown>
+                            <div dropdownToggle class="dropdown-toggle">
+                                <strong>{{userData?.details.userBean.userName}}</strong>
+                                <span class="user-icon">
+                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                </span>
+                                <span class="caret"></span>
+
+                            </div>
+                            <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li role="menuitem">
+                                    <a class="dropdown-item" (click)="openModal(template)">
+                                        <i class="fa fa-cog" aria-hidden="true"></i> Configure</a>
+                                </li>
+                                <li role="menuitem" (click)="logOut()">
+                                    <a class="dropdown-item">
+                                        <i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pull-right logedin-date">
+                        <span>Last Login date:</span>
+                        <strong>{{lastLoginData?.details | date:'short'}}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

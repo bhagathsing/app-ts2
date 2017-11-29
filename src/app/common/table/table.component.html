@@ -1,0 +1,253 @@
+<div class="blcok" #gridBlockElement>
+	<div class="table-grid-block">
+		<div class="table-grid-block-header">
+			<div class="table-grid-block-header-left">
+				<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+					<thead>
+						<tr style="color:white; background: #005c97;">
+							<th height="58" class="hideCol">Assignment 
+								<span class="hid-col-left" tooltip="Show Location"
+								placement="left"  container="body" (click)="showLocation()"  *ngIf="!isLocation" ><i class="fa fa-caret-right" aria-hidden="true"></i></span>
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>	
+			<div class="table-grid-block-header-center">
+				<div class="table-grid-block-header-innerright"  [ngClass]="{'scrollings':overFlowClass}" [style.left]="gridHeaderLeft+'px'">
+					<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+						<thead>
+							<tr style="color:white; background: #005c97;">
+								<th [ngClass]="{'holiday-block':timesheetHeader.holiday}" *ngFor="let timesheetHeader of tableHeader; let ind = index" attr.data-count="{{ind}}" height="58" width="60">
+									<span *ngIf="timesheetHeader.holiday" tooltip="Holiday"
+									 container="body">{{timesheetHeader.day.split(" ")[0]}}<br>{{timesheetHeader.day.split(" ")[2]}}</span>
+									<span *ngIf="!timesheetHeader.holiday">{{timesheetHeader.day.split(" ")[0]}}<br>{{timesheetHeader.day.split(" ")[2]}}</span>
+								</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="table-grid-block-header-right">
+				<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+					<thead>
+						<tr style="color:white; background: #005c97;">
+							<th width="100" height="58">Total</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div class="table-grid-block-body">
+			<div class="table-grid-block-body-left"  [style.height]="gridBodyHeight+'px'">
+				<div class="table-grid-block-body-innerleft" [style.top]="gridBodyTop+'px'">
+					<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+						<tbody>
+							<tr style="padding:0px;" *ngFor="let timesheetDetails of userData.details; let rowIndex = index">
+								<td [ngClass]="{'has-error':timesheetDetails.isSelectValid}">
+									<select class="form-control" 
+									[(ngModel)]="timesheetDetails.assignmentId"
+									(change)="onSelectionChange(timesheetDetails, rowIndex, userData.details)"
+									[disabled]="( (tsStatusTxt ==='submitted' && tabName==='review')||tsStatusTxt ==='approved' || tsStatusTxt ==='rejected' || tsStatusTxt === 'not submitted') || timesheetDetails.isDisableSelect">
+											<option *ngFor="let object of chargeCode.details; let indS = index" 
+												[attr.value]="object.charge_code_id" 
+												[attr.selected]="object.charge_code_id == timesheetDetails.assignmentId">
+												{{object.charge_code_description}}{{ indS == 0?'': '('+object.charge_code+')'}}</option>
+										</select>
+								</td>
+							</tr>
+							<tr style="padding:0px;" *ngIf="rowsCount && rowsCount.length ==0" class="empty-col">
+								<td height="39">
+									<span *ngIf="tabName==='record'">
+											<button class="btn btn-default wid-100-percent" 
+											[disabled]="userData.details.length ==0 ||  userData?.details[userData.details.length-1]?.isDisableSelect || userData?.details.length == (chargeCode.details.length - 1) || (tsStatusTxt ==='approved')"
+											(click)="addRow(userData.details)"><i class="fa fa-plus" aria-hidden="true"></i> Add Record</button>
+									</span>
+								</td>
+							</tr>
+							<tr style="padding:0px;" *ngFor="let rows of rowsCount; let indRow=index" class="empty-col">
+								<td height="39">
+									<span *ngIf="indRow == 0 && tabName==='record'">
+											<button class="btn btn-default wid-100-percent" 
+											[disabled]="userData.details.length ==0 || userData?.details[userData.details.length-1]?.isDisableSelect || userData?.details.length == (chargeCode.details.length - 1) || (tsStatusTxt ==='approved')" (click)="addRow(userData.details)"><i class="fa fa-plus" aria-hidden="true"></i> Add Record</button>
+									</span>
+								</td>
+							</tr>
+							<tr style="padding:0px;" class="time-zone-col">
+								<td height="39" class="txt-align-c">
+									<strong>Location</strong>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="table-grid-block-body-center" [style.height]="gridBodyHeight+'px'" (scroll)="moveGridHeader($event);">
+				<div class="table-grid-block-body-innerright">
+					<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+						<tbody>
+							<tr style="padding:0px;" *ngFor="let timesheetDetails of userData.details; let rowIndex = index">
+								<td *ngFor="let hoursWorked of timesheetDetails.dataBean; let hourIndex = index" 
+								[ngClass]="{'week-end':!hoursWorked.weekday,'holiday-block':hoursWorked.holiday}" height="39" width="60" attr.data-count="{{hourIndex}}" class="error-td">
+									<input type="text" maxlength="9" stringNotAllowed class="form-control" [(ngModel)]="hoursWorked.hours" 
+									(keydown)="stopString($event)"
+									(keyup)="changeData($event,userData,hourIndex,rowIndex,hoursWorked,timesheetDetails)"
+									(blur)="changeData($event,userData,hourIndex,rowIndex,hoursWorked,timesheetDetails)"
+									[disabled]="(tsStatusTxt ==='submitted' && tabName==='review')||tsStatusTxt ==='approved' || (tsStatusTxt ==='rejected' || tsStatusTxt === 'not submitted')">
+								</td>
+							</tr>
+							<ng-container *ngIf="rowsCount && rowsCount.length ==0" >
+							<tr style="padding:0px;" class="empty-col">
+								<td *ngFor="let col of columnCount; let indTd=index" width="50" class="error-td" height="39" [ngClass]="{'week-end':!col.weekday,'holiday-block':col.holiday}"></td>
+							</tr>
+							</ng-container>
+							<tr style="padding:0px;" *ngFor="let rows of rowsCount; let indRow=index;" class="empty-col">
+									<td *ngFor="let col of columnCount; let indTd=index" width="50" class="error-td" height="39" [ngClass]="{'week-end':!col.weekday,'holiday-block':col.holiday}"></td>
+							</tr>
+							<tr style="padding:0px;" class="time-zone-col">
+								<td *ngFor="let col of columnCount; let indTd=index" width="50" class="error-td" height="39" class="position-r" [ngClass]="{'week-end':!col.weekday,'holiday-block':col.holiday}">
+									<ng-container *ngIf="!col.editCountry">
+										<button class="btn btn-none-all edit-country" (click)="editCountry($event,col,selectDropdown)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+										<span  tooltip="{{col.countryName}}" container="body">{{col.countryName}}</span>
+									</ng-container>
+									<ng-container *ngIf="col.editCountry" >
+										<select class="form-control"  #selectDropdown
+											[(ngModel)]="col.countryId"
+											(focus)="colClick($event)"
+											(click)="colClick($event)"
+											(change)="onLocationChange(col, indTd, userData.totalHours)"
+											>
+													<option *ngFor="let location of locations?.details" 
+													[attr.value]="location.loc_id" 
+													[selected]="location.loc_id == col.countryId"
+													>{{location.location_name}} {{columnCount.countryName}}
+												</option>
+											</select>
+									</ng-container>	
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="table-grid-block-body-right" [style.height]="gridBodyHeight+'px'">
+					<div class="table-grid-block-body-innerright" [style.top]="gridBodyTop+'px'">
+						<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+							<tbody>
+								<tr style="padding:0px;" *ngFor="let timesheetDetails of userData.details; let rowIndex = index">
+									<td class="total-td" width="100" height="39"><span class="form-control-h">{{timesheetDetails.tsTotal}}</span></td>	
+								</tr>
+								<tr style="padding:0px;" *ngIf="rowsCount && rowsCount.length ==0" class="empty-col">
+									<td class="total-td" width="100" height="39"></td>
+								</tr>
+								<tr style="padding:0px;" *ngFor="let rows of rowsCount; let indRow=index" class="empty-col">
+									<td class="total-td" width="100" height="39"></td>
+								</tr>
+								<tr style="padding:0px;" class="time-zone-col">
+									<td width="100" height="39"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+			</div>
+		</div>
+		<div class="table-grid-block-footer block">
+			<div class="table-grid-block-footer-left">
+				<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+					<tfoot>
+						<tr>
+							<td style="vertical-align: middle; text-align: center" height="39">Total hours</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<div class="table-grid-block-footer-center" [ngClass]="{'scrollings':overFlowClass}">
+				<div class="table-grid-block-footer-innerright" [style.left]="gridHeaderLeft+'px'">
+					<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+						<tfoot>
+							<tr>
+								<td *ngFor="let totalhoursWorked of userData.totalHours;" class="error-td" [ngClass]="{'has-error':totalhoursWorked.isValidHour,'holiday-block':totalhoursWorked.holiday}" width="50"><span class="form-control form-control-h">{{totalhoursWorked.dayHrs}}</span>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+			<div class="table-grid-block-footer-right">
+				<table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+					<tfoot>
+						<tr>
+							<td class="total-td total-td-all" height="39" width="100"><span class="form-control-h">{{userData.totalTsHorsLogged}}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+		<!-- <div class="block holiday-block">sadg</div> -->
+	</div>
+</div>
+<div class="block">
+	<!-- <table class="table table-bordered table-inverse table-time myte-table" style="margin:0">
+		<thead>
+			<tr style="color:white; background: #005c97;">
+				<th width="160">Assignment</th>
+				<th *ngFor="let timesheetHeader of tableHeader; let ind = index" attr.data-count="{{ind}}" height="58">{{timesheetHeader.day.split(" ")[0]}}<br>{{timesheetHeader.day.split(" ")[2]}}</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr style="padding:0px;" *ngFor="let timesheetDetails of userData.details; let rowIndex = index">
+				<td [ngClass]="{'has-error':timesheetDetails.isSelectValid}">
+					<select class="form-control" 
+					[(ngModel)]="timesheetDetails.assignmentId"
+					(change)="onSelectionChange(timesheetDetails, rowIndex, userData.details)"
+					[disabled]="((tsStatusTxt ==='submitted' && tabName=='review')||tsStatusTxt ==='approved' || tsStatusTxt ==='rejected') || timesheetDetails.isDisableSelect">
+							<option *ngFor="let object of chargeCode.details" 
+								[attr.value]="object.charge_code_id" 
+								[attr.selected]="object.charge_code_id == timesheetDetails.assignmentId">{{object.charge_code_description}}</option>
+						</select>
+				</td>
+				<td *ngFor="let hoursWorked of timesheetDetails.dataBean; let hourIndex = index" 
+				[ngClass]="{'week-end':!hoursWorked.weekday}" height="39" attr.data-count="{{hourIndex}}">
+					<input type="text" maxlength="9" stringNotAllowed class="form-control" [(ngModel)]="hoursWorked.hours" 
+					(keydown)="stopString($event)"
+					(keyup)="changeData($event,userData,hourIndex,rowIndex,hoursWorked)"
+					(blur)="changeData($event,userData,hourIndex,rowIndex,hoursWorked)"
+					[disabled]="(tsStatusTxt ==='submitted' && tabName=='review') ||tsStatusTxt ==='approved' || (tsStatusTxt ==='rejected')">
+				</td>
+				<td class="total-td"><span class="form-control-h">{{timesheetDetails.tsTotal}}</span></td>
+			</tr>
+			<tr style="padding:0px;" *ngIf="rowsCount && rowsCount.length ==0" class="empty-col">
+					<td width="160" height="39">
+						<span *ngIf="tabName==='record'">
+								<button class="btn btn-default wid-100-percent" 
+								[disabled]="userData.details.length ==0 ||  userData?.details[userData.details.length-1]?.isDisableSelect || userData?.details.length == (chargeCode.details.length - 1)"
+								(click)="addRow(userData.details)"><i class="fa fa-plus" aria-hidden="true"></i> Add Record</button>
+						</span>
+					</td>
+					<td *ngFor="let col of columnCount" height="39" [ngClass]="{'week-end':!col.weekday}"></td>
+					<td class="total-td"></td>
+				</tr>
+			<tr style="padding:0px;" *ngFor="let rows of rowsCount; let indRow=index" class="empty-col">
+				<td width="160" height="39">
+					<span *ngIf="indRow == 0 && tabName==='record'">
+							<button class="btn btn-default wid-100-percent" 
+							[disabled]="userData.details.length ==0 || userData?.details[userData.details.length-1]?.isDisableSelect || userData?.details.length == (chargeCode.details.length - 1)" (click)="addRow(userData.details)"><i class="fa fa-plus" aria-hidden="true"></i> Add Record</button>
+					</span>
+				</td>
+				<td *ngFor="let col of columnCount" height="39" [ngClass]="{'week-end':!col.weekday}"></td>
+				<td class="total-td"></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td style="vertical-align: middle; text-align: center" height="39">Total hours</td>
+				<td *ngFor="let totalhoursWorked of userData.totalHours;"><div class="form-control form-control-h">{{totalhoursWorked.dayHrs}}</div>
+				</td>
+				<td class="total-td total-td-all"><span class="form-control-h">{{userData.totalTsHorsLogged}}</span>
+				</td>
+			</tr>
+		</tfoot>
+	</table> -->
+</div>

@@ -1,0 +1,87 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!-- Header start-->
+<header class="header">
+	<div class="container-fluid color-overlay">
+		<div class="col-lg-12">
+			<div class="page-scroll nav-logo">
+				<a class="navbar-brand page-scroll logo-1 pull-left"
+					 target="_blank"> <img src="./assets/images/logo1.jpg" width="176px"
+					class="img-responsive img-centered" alt="BlueSwan"></a>
+				<a class="navbar-brand page-scroll pull-right" href="http://www.cigniti.com/"
+					target="_blank"> <img src="./assets/images/cigniti-logo.png"
+					class="img-responsive img-centered" alt="Cigniti Technologies"></a>
+				
+			</div>
+		</div>
+	</div>
+</header>
+<!-- Header end-->
+
+
+
+<div class="bodyContent content-wrapper">
+  <div class="container-fluid" style="margin-top:0px;height:auto;">
+    <div class="row" style="margin-bottom: 10%;">   
+       <div class="col-lg-9">
+			<div class="header-subtext" style="padding-top:15px;">
+				<h1 style="font-size: 40px;">MyTR</h1>
+				<p style="font-size: 18px;">Online timesheet software that lets you manage billing/chargeability consumption. Simple online timesheets that reduce administration by combining 
+						time tracking, billing and payroll.</p>
+			</div>
+			</div>
+	 <div class="col-lg-3">
+        <div class="form-bg"> 
+          <!-- Register Form Grid Section -->
+          <form (ngSubmit)="onLogin()" [formGroup]="loginForm" #loginFormObj="ngForm" novalidate>
+			<h1 class="login-title">MyTR LOGIN</h1>
+			<div class="alert alert-danger" *ngIf="isLogin" >
+				UserId or Password is incorrect
+			</div>
+			<div class="form-group" [ngClass]="{'has-error':formErrors.userId && loginFormObj.submitted}">
+				<input class="form-control" id="userId" type="text" placeholder="User ID" 
+				formControlName="userId" />
+				<div class="alert alert-danger" *ngIf="formErrors.userId && loginFormObj.submitted">
+					{{ formErrors.userId }}
+				</div>
+			</div>
+			<div class="form-group" [ngClass]="{'has-error':formErrors.password && loginFormObj.submitted}">
+				<input class="form-control" id="password" type="password" placeholder="Password" 
+				formControlName="password" />
+				<div class="alert alert-danger" *ngIf="formErrors.password && loginFormObj.submitted">
+					{{ formErrors.password }}
+				</div>
+			</div>
+			<button type="submit" id="submit" [disabled]="" class="btn-xl cta-btn-login">LOGIN</button>
+          </form>
+        </div>
+      </div>
+	 </div>
+	</div>
+	<div class="clear-block"></div>
+</div>
+
+<!-- Footer start-->
+<footer class="footer">
+		<div class="container">
+			<div class="row text-center">
+				<div id="copyright">
+					Copyright © 2017, <b>Independent Software Testing Services
+						Company | Cigniti Technologies</b>, All rights reserved
+				</div>
+			</div>
+		</div>
+	</footer>
+<!-- Footer end-->
+
+
+<div [ngBusy]="busy"></div>
+<confirm 
+	title="{{confirmPopupData.title}}" 
+	message="{{confirmPopupData.message}}" 
+	confirmText="{{confirmPopupData.confirmText}}" 
+	cancelText="{{confirmPopupData.cancelText}}"
+	type="{{confirmPopupData.type}}">
+</confirm>
+
+
+

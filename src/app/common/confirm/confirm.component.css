@@ -1,0 +1,110 @@
+.sta-confirm-dialog {
+    min-width:270px;
+}
+
+.sta-confirm-dialog .modal-header {
+    padding:0px;
+    border:none;
+}
+
+.sta-confirm-dialog .modal-body {
+    padding:0px;
+}
+
+.sta-confirm-dialog .modal-title {
+    color:#000;
+}
+
+.sta-confirm-dialog .modal-message {
+    padding:20px 0px;
+}
+
+.sta-confirm-dialog .modal-message .icon {
+    width:24px;
+    text-align:center;
+    line-height:24px;
+    border-radius:50%;
+    color:#fff;
+    display:inline-block;
+    vertical-align:top;
+    margin-right:2px;
+    font-size:18px;
+    vertical-align: middle;
+}
+
+.sta-confirm-dialog .modal-message .text {
+    display:inline-block;
+    width:calc(100% - 48px);
+    vertical-align: middle;
+}
+
+.sta-confirm-dialog .modal-content {
+    border-radius:3px;
+    padding:24px 24px 20px;
+}
+
+.sta-confirm-dialog .modal-btn {
+    text-align:right;
+}
+
+.sta-confirm-dialog .btn {
+    border-radius:2px;
+    padding:6px 30px;
+}
+
+.sta-confirm-dialog .btn-primary {
+    background-color:transparent;
+}
+
+.sta-confirm-dialog .btn-default {
+    margin-right:6px;
+}
+
+.sta-confirm-dialog .success {
+    background-color:#64B65E;
+    border-color:#64B65E;
+}
+
+.sta-confirm-dialog .warning {
+    background-color:#F5A108;
+    border-color:#F5A108;
+}
+
+.sta-confirm-dialog .danger {
+    background-color:#D0021B;
+    border-color:#D0021B;
+}
+.sta-confirm-dialog .icon.danger {
+    color:#D0021B;
+    background: none;
+    border: none;
+}
+
+.sta-confirm-dialog .info {
+    background-color:#3498DB;
+    border-color:#3498DB;
+}
+
+.sta-confirm-dialog .btn.success:hover,
+.sta-confirm-dialog .btn.success:focus {
+    background-color:#4B9D45;
+    border-color:#4B9D45;
+}
+
+.sta-confirm-dialog .btn.warning:hover, 
+.sta-confirm-dialog .btn.warning:focus {
+    background-color:#DC8800;
+    border-color:#DC8800;
+}
+
+.sta-confirm-dialog .btn.danger:hover,
+.sta-confirm-dialog .btn.danger:focus {
+    background-color:#B70002;
+    border-color:#B70002;
+}
+
+.sta-confirm-dialog .btn.info:hover,
+.sta-confirm-dialog .btn.info:focus {
+    background-color:#1B7FC2;
+    border-color:#1B7FC2;
+}
